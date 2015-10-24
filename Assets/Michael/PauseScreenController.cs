@@ -18,10 +18,10 @@ public class PauseScreenController : MonoBehaviour {
 	}
 
 	public void exitPause(){
-		this.gameObject.SetActive = false;
+		// this.gameObject.SetActive = false;
 	}
 
 	public void openSettings(){
-		UnityEditor.ResolutionDialogSetting ();
+		// UnityEngine.GUISettings ();
 	}
 }
