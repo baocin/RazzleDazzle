@@ -2,11 +2,10 @@
 using UnityEngine.UI;
 using System.Collections;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class FirstPersonController : MonoBehaviour 
 {
-    // Required Variables
-    // Public Variables
+
     public bool bypassErrorCheck = false; 
     public Camera playerCamera;
     public GameObject pauseMenu;
@@ -14,7 +13,7 @@ public class FirstPersonController : MonoBehaviour
     public bool useUserPlayerPrefs = false;
     public float walkSpeed = 10.0f;
     public float sprintSpeed = 15.0f;
-    public float sprintTime = 15.0f;
+    public float sprintTime = 6.5f;
     public float exhaustTime = 5.0f;
     public float jumpHeight = 20.0f;
     public float mouseSensitivity = 5.0f;
@@ -28,18 +27,16 @@ public class FirstPersonController : MonoBehaviour
     public AudioSource walkingSound;
     public AudioSource sprintingSound;
     public AudioClip exhaustionSound;
+    AudioSource audio;
 
-    // Private Variables - Do not change.
     float yRotation = 0;
     float verticalVelocity = 0;
     CharacterController cController;
     bool isPaused = false;
     bool isSprinting = false;
 
-    // Function is ran when the scene starts.
 	void Start () 
     {
-        // DO NOT REMOVE
         if (!bypassErrorCheck)
         {
             errorCheck();
@@ -51,12 +48,14 @@ public class FirstPersonController : MonoBehaviour
 
         // Do not remove these, it's required for the script to function correctly.
         cController = GetComponent<CharacterController>();
+        audio = GetComponent<AudioSource>();
         Time.timeScale = 1;
 
         // This is optional, but suggested.
-            // Press "Escape" when in play mode to release the cursor.
-        Screen.lockCursor = true;
-	}
+        // Press "Escape" when in play mode to release the cursor.
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 	
 
 	void Update () 
@@ -96,14 +95,12 @@ public class FirstPersonController : MonoBehaviour
 
     void watchMovement()
     {
-        float movementSpeed = 0;
-        if (cController.isGrounded && Input.GetKey(KeyCode.LeftShift) && !isSprinting)
+        float movementSpeed = 0, sideSpeed = 0;
+        if (cController.isGrounded && Input.GetButton("Sprint") && !isSprinting)
         {
-            //movementSpeed = Input.GetAxis("Vertical") * sprintSpeed;
                 Debug.Log("If (!isSprinting) = check");
                 movementSpeed = Input.GetAxis("Vertical") * sprintSpeed;
-                
-                isSprinting = true;
+                sideSpeed = Input.GetAxis("Horizontal") * sprintSpeed;
                 Debug.Log("isSprinting: " + isSprinting);
                 Debug.Log("Starting Coroutine");
                 StartCoroutine("sprintTimer");
@@ -112,9 +109,9 @@ public class FirstPersonController : MonoBehaviour
         else
         {
             movementSpeed = Input.GetAxis("Vertical") * walkSpeed;
+            sideSpeed = Input.GetAxis("Horizontal") * walkSpeed;
         }
 
-        float sideSpeed = Input.GetAxis("Horizontal") * walkSpeed;
         verticalVelocity += Physics.gravity.y * Time.deltaTime;
         Vector3 speed = new Vector3(sideSpeed, verticalVelocity, movementSpeed);
         speed = transform.rotation * speed;
@@ -125,6 +122,7 @@ public class FirstPersonController : MonoBehaviour
     {
         Debug.Log("Starting timer.");
         yield return new WaitForSeconds(sprintTime);
+        isSprinting = true;
         Debug.Log("Waited " + sprintTime + " seconds.");
         Debug.Log("isSprinting: " + isSprinting);
         StartCoroutine("exhaustionTimer");
@@ -132,7 +130,11 @@ public class FirstPersonController : MonoBehaviour
 
     IEnumerator exhaustionTimer()
     {
-        AudioSource.PlayClipAtPoint(exhaustionSound, transform.position);
+        if (!audio.isPlaying)
+        {
+            audio.PlayOneShot(exhaustionSound, 1f);
+        }
+        //AudioSource.PlayClipAtPoint(exhaustionSound, transform.position);
         yield return new WaitForSeconds(exhaustTime);
         isSprinting = false;
     }
@@ -150,7 +152,8 @@ public class FirstPersonController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             isPaused = togglePause();
-            Screen.lockCursor = false;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
     }
 
@@ -163,11 +166,12 @@ public class FirstPersonController : MonoBehaviour
         else
         {
             pauseMenu.SetActive(false);
-            Screen.lockCursor = true;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
         }
     }
 
-    bool togglePause()
+    public bool togglePause()
     {
         if (Time.timeScale == 0)
         {
