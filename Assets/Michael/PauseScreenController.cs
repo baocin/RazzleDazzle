@@ -13,15 +13,15 @@ public class PauseScreenController : MonoBehaviour {
 		
 	}
 
+	public void GoTo(int i){
+		Application.LoadLevel (i);
+	}
+
 	public void exitGame(){
 		Application.Quit();
 	}
 
 	public void exitPause(){
-		// this.gameObject.SetActive = false;
-	}
-
-	public void openSettings(){
-		// UnityEngine.GUISettings ();
+		//GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>().
 	}
 }
