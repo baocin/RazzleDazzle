@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io/api/unity,visualstudio,monodevelop,windows
 
+# Custom
+/Apocalyptic.CityPack/
+
 ### Unity ###
 /[Ll]ibrary/
 /[Tt]emp/
