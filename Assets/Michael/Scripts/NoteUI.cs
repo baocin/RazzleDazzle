@@ -15,6 +15,6 @@ public class NoteUI : MonoBehaviour {
 
 	void OnClick(){
 		Debug.Log ("Clicked outside of note - closing");
-		GameObject.Find ("NoteImage").SetActive (false);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Manager>().CloseNote();
 	}
 }

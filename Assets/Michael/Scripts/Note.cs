@@ -52,7 +52,7 @@ public class Note : MonoBehaviour
 				}else if (gameObject.CompareTag("Note1")){
 					ActivateNote(1);
 				}
-
+                gameObject.SetActive(false);
 			}
 		}
 	}
@@ -60,13 +60,15 @@ public class Note : MonoBehaviour
 	public void ActivateNote(int i)
 	{
 		Debug.Log ("Activating note #" + i);
-		showNote (i);
+		//showNote (i);
 		if (i == 0) {
 			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get a flash light.");
+            GameObject.Find("null").GetComponent<Manager>().ActivateNote(0);
 		} else if (i == 1) {
 			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get some gas");
-		}
-		StartCoroutine("Wait");
+            GameObject.Find("null").GetComponent<Manager>().ActivateNote(1);
+        }
+		//StartCoroutine("Wait");
 	}
 
 	public void showNote(int i){

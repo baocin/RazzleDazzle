@@ -5,6 +5,9 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class FirstPersonController : MonoBehaviour 
 {
+    // Other Public Shit
+    [System.NonSerialized]
+    public bool noteOpen;
 
     public bool bypassErrorCheck = false; 
     public Camera playerCamera;
@@ -80,7 +83,7 @@ public class FirstPersonController : MonoBehaviour
 
     void watchCamera()
     {
-        if (isPaused)
+        if (isPaused || noteOpen)
         {
             transform.Rotate(0, 0, 0);
             playerCamera.transform.localRotation = Quaternion.Euler(0, 0, 0);
@@ -97,27 +100,30 @@ public class FirstPersonController : MonoBehaviour
 
     void watchMovement()
     {
-        float movementSpeed = 0, sideSpeed = 0;
-        if (cController.isGrounded && Input.GetButton("Sprint") && !isSprinting)
+        if (!noteOpen)
         {
+            float movementSpeed = 0, sideSpeed = 0;
+            if (cController.isGrounded && Input.GetButton("Sprint") && !isSprinting)
+            {
                 Debug.Log("If (!isSprinting) = check");
                 movementSpeed = Input.GetAxis("Vertical") * sprintSpeed;
                 sideSpeed = Input.GetAxis("Horizontal") * sprintSpeed;
                 Debug.Log("isSprinting: " + isSprinting);
                 Debug.Log("Starting Coroutine");
                 StartCoroutine("sprintTimer");
-              
-        }
-        else
-        {
-            movementSpeed = Input.GetAxis("Vertical") * walkSpeed;
-            sideSpeed = Input.GetAxis("Horizontal") * walkSpeed;
-        }
 
-        verticalVelocity += Physics.gravity.y * Time.deltaTime;
-        Vector3 speed = new Vector3(sideSpeed, verticalVelocity, movementSpeed);
-        speed = transform.rotation * speed;
-        cController.Move(speed * Time.deltaTime);
+            }
+            else
+            {
+                movementSpeed = Input.GetAxis("Vertical") * walkSpeed;
+                sideSpeed = Input.GetAxis("Horizontal") * walkSpeed;
+            }
+
+            verticalVelocity += Physics.gravity.y * Time.deltaTime;
+            Vector3 speed = new Vector3(sideSpeed, verticalVelocity, movementSpeed);
+            speed = transform.rotation * speed;
+            cController.Move(speed * Time.deltaTime);
+        }
     }
 
     IEnumerator sprintTimer()
@@ -164,7 +170,7 @@ public class FirstPersonController : MonoBehaviour
 
         }
 
-        if (Input.GetKeyUp(KeyCode.Escape))
+        if (Input.GetKeyUp(KeyCode.Escape) && !noteOpen)
         {
             isPaused = togglePause();
             Cursor.lockState = CursorLockMode.None;
@@ -175,15 +181,18 @@ public class FirstPersonController : MonoBehaviour
 
     void watchPause()
     {
-        if (isPaused)
+        if (!noteOpen)
         {
-            pauseMenu.SetActive(true);
-        }
-        else
-        {
-            pauseMenu.SetActive(false);
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            if (isPaused)
+            {
+                pauseMenu.SetActive(true);
+            }
+            else
+            {
+                pauseMenu.SetActive(false);
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
         }
     }
 
