@@ -17,11 +17,13 @@ public class ChairScare : MonoBehaviour
     // Commnence the oh shit.
     void OnTriggerEnter(Collider obj)
     {
-        Debug.Log("Item has entered");
+        //Debug.Log("Item has entered");
         if (obj.tag == "Player")
         {
             if (!hasScared)
             {
+                Debug.Log(obj.name);
+                Debug.Log("Playing sounds");
                 _audio.PlayOneShot(Thunder, 0.4f);
                 Hanger.SetActive(true);
                 _audio.PlayOneShot(Roar, 0.7f);
