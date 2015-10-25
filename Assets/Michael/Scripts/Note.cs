@@ -19,7 +19,7 @@ public class Note : MonoBehaviour
 
 	}
 
-	public void OnTriggerEnter(Collider obj)
+	void OnTriggerEnter(Collider obj)
 	{
 		Debug.Log ("Possible note pickup");
 		if(obj.tag == "Player" && gameObject.activeInHierarchy)
