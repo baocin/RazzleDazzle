@@ -13,25 +13,48 @@ using System.Collections;
 public class Note : MonoBehaviour
 {
 	public GameObject [] Notes;
+	bool nearNote = false;
 
 	public Note ()
 	{
 
 	}
 
-	void OnTriggerEnter(Collider obj)
+	void OnTriggerStay(Collider obj)
 	{
 		Debug.Log ("Possible note pickup");
-		if(obj.tag == "Player" && gameObject.activeInHierarchy)
+		if(obj.gameObject.tag == "Player")
 		{
-			Debug.Log ("Picked up note");
-			if (gameObject.CompareTag("Note0")){
-				ActivateNote(0);
-			}else if (gameObject.CompareTag("Note1")){
-				ActivateNote(1);
-			}
+			obj.gameObject.GetComponent<Notifications>().Notify("Press the interact key to pick up note.");
+			Debug.Log("Player near note");
+			
+		}
+		nearNote = true;
+	}
 
-			//gameObject.SetActive(false);
+	void OnTriggerExit(Collider Collider)
+	{
+		if (Collider.gameObject.tag == "Player")
+		{
+			Collider.gameObject.GetComponent<Notifications>().ResetNotify();
+			nearNote = false;
+		}
+	}
+
+	
+	void Update()
+	{
+		if (nearNote)
+		{
+			if (Input.GetButtonUp("Interact"))
+			{
+				Debug.Log("Interacted with note: " + gameObject.tag);
+				if (gameObject.CompareTag("Note0")){
+					ActivateNote(0);
+				}else if (gameObject.CompareTag("Note1")){
+					ActivateNote(1);
+				}
+			}
 		}
 	}
 
@@ -49,10 +72,11 @@ public class Note : MonoBehaviour
 	public void showNote(int i){
 		GameObject.Find ("NotesCanvas").SetActive (true);
 		GameObject.Find ("NoteImage").SetActive (true);
-		//GameObject.Find ("NoteImage").transform.
-		//if (i == 0) {
-			//Debug.Log (GameObject.Find ("NoteImage").GetComponents());
-		}
+
+		
+		GameObject.Find ("NoteImage").gameObject.GetComponent<MeshRenderer> ().material.mainTexture = (Texture3D)
+			Resources.Load ("Note" + i, typeof(Texture3D)); 
+	}
 
 
 	IEnumerator Wait()

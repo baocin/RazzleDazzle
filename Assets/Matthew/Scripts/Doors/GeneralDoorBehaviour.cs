@@ -25,7 +25,7 @@ public class GeneralDoorBehaviour : MonoBehaviour
         if(Collider.gameObject.tag == "Player")
         {
             Collider.gameObject.GetComponent<Notifications>().Notify("Press the interact key to use the door.");
-            Debug.Log("Player has entered");
+            //Debug.Log("Player has entered");
             DoorInFocus = true;
         }
     }
@@ -35,7 +35,7 @@ public class GeneralDoorBehaviour : MonoBehaviour
         if (Collider.gameObject.tag == "Player")
         {
             Collider.gameObject.GetComponent<Notifications>().ResetNotify();
-            Debug.Log("Player has exited");
+            //Debug.Log("Player has exited");
             DoorInFocus = false;
         }
     }
