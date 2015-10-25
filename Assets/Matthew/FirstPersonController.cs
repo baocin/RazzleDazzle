@@ -9,6 +9,8 @@ public class FirstPersonController : MonoBehaviour
     public bool bypassErrorCheck = false; 
     public Camera playerCamera;
     public GameObject pauseMenu;
+    public GameObject Flashlight;
+    public Light FlashlightLight;
     public bool useFullPlayerPrefs = false;
     public bool useUserPlayerPrefs = false;
     public float walkSpeed = 10.0f;
@@ -149,12 +151,26 @@ public class FirstPersonController : MonoBehaviour
 
     void watchKeybinds()
     {
+        if (Input.GetButtonUp("Toggle Flashlight"))
+        {
+            if (FlashlightLight.enabled)
+            {
+                FlashlightLight.enabled = true;
+            }
+            else
+            {
+                FlashlightLight.enabled = false;
+            }
+
+        }
+
         if (Input.GetKeyUp(KeyCode.Escape))
         {
             isPaused = togglePause();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
+
     }
 
     void watchPause()
