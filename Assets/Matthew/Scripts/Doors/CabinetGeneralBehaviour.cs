@@ -25,7 +25,7 @@ public class CabinetGeneralBehaviour : MonoBehaviour
     {
         if (Collider.gameObject.tag == "Player" && CanBeOpened)
         {
-            Collider.gameObject.GetComponent<Notifications>().Notify("Press the interact key to use the door.");
+            Collider.gameObject.GetComponent<Notifications>().Notify("Press the interact key to use the cabinet.");
             Debug.Log("Player has entered");
             DoorInFocus = true;
         }
