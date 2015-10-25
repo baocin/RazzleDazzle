@@ -151,15 +151,15 @@ public class FirstPersonController : MonoBehaviour
 
     void watchKeybinds()
     {
-        if (Input.GetButtonUp("Toggle Flashlight"))
+		if (Input.GetButtonUp("Toggle Flashlight") && GameObject.FindGameObjectWithTag("Flashlight"))
         {
             if (FlashlightLight.enabled)
             {
-                FlashlightLight.enabled = true;
+                FlashlightLight.enabled = false;
             }
             else
             {
-                FlashlightLight.enabled = false;
+                FlashlightLight.enabled = true;
             }
 
         }
