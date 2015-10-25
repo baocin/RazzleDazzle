@@ -16,6 +16,17 @@ public class Manager : MonoBehaviour
         public float MinimumTime, MaximumTime;
         public AudioClip[] Sound;
     }
+
+    public LevelObjectives Objectives;
+    // Objectives
+    [System.Serializable]
+    public class LevelObjectives
+    {
+        public bool hasKey = false;
+        public bool hasFlashlight = false;
+        public int notes = 0;
+    }
+
     void Awake()
     {
         _audio = GetComponent<AudioSource>();
@@ -55,8 +66,25 @@ public class Manager : MonoBehaviour
     public void CloseNote()
     {
         GameObject.FindGameObjectWithTag("Player").GetComponent<FirstPersonController>().noteOpen = false;
+        Objectives.notes++;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         NotesCanvas.gameObject.SetActive(false);
+    }
+
+    public void FrontDoor()
+    {
+        if (Objectives.notes >= 2 && Objectives.hasFlashlight && Objectives.hasKey)
+        {
+
+        }
+        else if(Objectives.notes >= 2 && Objectives.hasFlashlight &&!Objectives.hasKey)
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Notifications>().Notify("Door is locked. Find the key.");
+        }
+        else
+        {
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Notifications>().Notify("Complete the objectives before moving on.");
+        }
     }
 }

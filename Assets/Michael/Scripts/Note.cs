@@ -62,13 +62,13 @@ public class Note : MonoBehaviour
 		Debug.Log ("Activating note #" + i);
 		//showNote (i);
 		if (i == 0) {
-			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get a flash light.");
+			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get some gas");
             GameObject.Find("null").GetComponent<Manager>().ActivateNote(0);
 		} else if (i == 1) {
-			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get some gas");
+			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get a flashlight");
             GameObject.Find("null").GetComponent<Manager>().ActivateNote(1);
         }
-		//StartCoroutine("Wait");
+		StartCoroutine("Wait");
 	}
 
 	public void showNote(int i){
@@ -83,9 +83,9 @@ public class Note : MonoBehaviour
 
 	IEnumerator Wait()
 	{
-		yield return new WaitForSeconds(3f);
-		gameObject.GetComponent<Notifications>().ResetNotify();
+		yield return new WaitForSeconds(2.5f);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<Notifications>().ResetNotify();
 	}
 	
-	}
+}
 

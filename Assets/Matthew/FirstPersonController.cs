@@ -157,7 +157,7 @@ public class FirstPersonController : MonoBehaviour
 
     void watchKeybinds()
     {
-		if (Input.GetButtonUp("Toggle Flashlight") && GameObject.FindGameObjectWithTag("Flashlight"))
+		if (Input.GetButtonUp("Toggle Flashlight") && GameObject.FindGameObjectWithTag("Flashlight").activeInHierarchy)
         {
             if (FlashlightLight.enabled)
             {
@@ -170,13 +170,17 @@ public class FirstPersonController : MonoBehaviour
 
         }
 
+        if(Input.GetKeyUp(KeyCode.Insert))
+        {
+            Debug.Log(GameObject.Find("null").GetComponent<Manager>().Objectives.notes);
+        }
+
         if (Input.GetKeyUp(KeyCode.Escape) && !noteOpen)
         {
             isPaused = togglePause();
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
         }
-
     }
 
     void watchPause()
@@ -228,7 +232,5 @@ public class FirstPersonController : MonoBehaviour
         {
             Debug.LogError("There's no walking sound! Please add one before you continue!");
         }
-
-
     }
 }

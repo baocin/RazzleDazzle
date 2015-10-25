@@ -9,6 +9,7 @@ public class Torch : MonoBehaviour
         {
             gameObject.SetActive(false);
             obj.GetComponent<Misc>().ActivateFlashlight();
+            GameObject.Find("null").GetComponent<Manager>().Objectives.hasFlashlight = true;
         }
     }
 }
