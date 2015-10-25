@@ -24,7 +24,7 @@ public class ChairScare : MonoBehaviour
             {
                 Debug.Log(obj.name);
                 Debug.Log("Playing sounds");
-                _audio.PlayOneShot(Thunder, 0.4f);
+                //_audio.PlayOneShot(Thunder, 0.4f);
                 Hanger.SetActive(true);
                 _audio.PlayOneShot(Roar, 0.7f);
                 _audio.PlayOneShot(Scream, 0.5f);
@@ -50,7 +50,7 @@ public class ChairScare : MonoBehaviour
     {
         hasScared = true;
         Lightning.SetActive(false);
-        Hanger.SetActive(false);
+        Destroy(Hanger);
         for (int i = 1; i > 0; i--)
         {
             yield return new WaitForSeconds(0.1f);
