@@ -43,14 +43,18 @@ public class ChairScare : MonoBehaviour
             yield return new WaitForSeconds(Random.Range(0.1f, 0.4f));
         }
         yield return new WaitForSeconds(2.25f);
-        ReturnToNorm();
+        StartCoroutine("ReturnToNorm");
     }
 
-    void ReturnToNorm()
+    IEnumerator ReturnToNorm()
     {
         hasScared = true;
         Lightning.SetActive(false);
-        _audio.Stop();
         Hanger.SetActive(false);
+        for (int i = 1; i > 0; i--)
+        {
+            yield return new WaitForSeconds(0.1f);
+            _audio.volume -= 0.1f;
+        }
     }
 }
