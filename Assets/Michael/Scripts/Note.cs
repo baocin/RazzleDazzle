@@ -13,23 +13,21 @@ using System.Collections;
 public class Note : MonoBehaviour
 {
 	public GameObject [] Notes;
-	bool nearNote = false;
+	public bool nearNote = false;
 
 	public Note ()
 	{
 
 	}
-
-	void OnTriggerStay(Collider obj)
+	void OnTriggerStay(Collider Collider)
 	{
-		Debug.Log ("Possible note pickup");
-		if(obj.gameObject.tag == "Player")
+		//Debug.Log ("Possible note pickup");
+		if(Collider.gameObject.tag == "Player")
 		{
-			obj.gameObject.GetComponent<Notifications>().Notify("Press the interact key to pick up note.");
-			Debug.Log("Player near note");
-			
+			Collider.gameObject.GetComponent<Notifications>().Notify("Press the interact key to pick up note.");
+			//Debug.Log("Player near note");
+			nearNote = true;
 		}
-		nearNote = true;
 	}
 
 	void OnTriggerExit(Collider Collider)
@@ -54,17 +52,19 @@ public class Note : MonoBehaviour
 				}else if (gameObject.CompareTag("Note1")){
 					ActivateNote(1);
 				}
+
 			}
 		}
 	}
 
 	public void ActivateNote(int i)
 	{
+		Debug.Log ("Activating note #" + i);
 		showNote (i);
 		if (i == 0) {
-			gameObject.GetComponent<Notifications> ().Notify ("Get a flash light.");
+			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get a flash light.");
 		} else if (i == 1) {
-			gameObject.GetComponent<Notifications> ().Notify ("Get some gas");
+			GameObject.Find ("Player").GetComponent<Notifications> ().Notify ("Get some gas");
 		}
 		StartCoroutine("Wait");
 	}
