@@ -14,7 +14,7 @@ public class PauseScreenController : MonoBehaviour {
 	}
 
 	public void GoTo(int i){
-		Application.LoadLevelAsync (i);
+		Application.LoadLevel (i);
 	}
 
 	public void resetGame(){

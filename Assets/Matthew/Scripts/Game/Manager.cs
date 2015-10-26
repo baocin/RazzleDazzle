@@ -87,4 +87,30 @@ public class Manager : MonoBehaviour
             GameObject.FindGameObjectWithTag("Player").GetComponent<Notifications>().Notify("Complete the objectives before moving on.");
         }
     }
+
+	public void BackDoor()
+	{
+		if (Objectives.notes >= 2 && Objectives.hasFlashlight){
+			GameObject.FindGameObjectWithTag("BackDoor").GetComponent<GeneralDoorBehaviour>().Locked = false;
+
+		}
+
+		if (Objectives.hasFlashlight && Objectives.notes < 2) {
+			GameObject.FindGameObjectWithTag ("Player").GetComponent<Notifications> ().Notify ("Door is locked. Find the notes.");
+		} else if (!Objectives.hasFlashlight && Objectives.notes >= 2) {
+			GameObject.FindGameObjectWithTag ("Player").GetComponent<Notifications> ().Notify ("Door is locked. Find the flashlight.");
+		} else if (Objectives.notes >= 2 && Objectives.hasFlashlight) {
+
+		}else
+		{
+			GameObject.FindGameObjectWithTag("Player").GetComponent<Notifications>().Notify("Complete the objectives before moving on.");
+		}
+		//StartCoroutine("Wait");
+	}
+
+	IEnumerator Wait()
+	{
+		yield return new WaitForSeconds(2.5f);
+		GameObject.FindGameObjectWithTag("Player").GetComponent<Notifications>().ResetNotify();
+	}
 }

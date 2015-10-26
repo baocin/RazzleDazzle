@@ -44,6 +44,7 @@ public class GeneralDoorBehaviour : MonoBehaviour
     {
         if (DoorInFocus)
         {
+
             if (Input.GetButtonUp("Interact") && CanBeOpened)
             {
                 Debug.Log("Interacted with door.");
@@ -54,47 +55,36 @@ public class GeneralDoorBehaviour : MonoBehaviour
 
     bool DoDoor()
     {
-        string axis = Axis.ToLower();
-        if(axis == "x")
-        {
-            if (IsOpen)
-            {
-                DoorObject.gameObject.transform.Rotate((AxisPoints.Close - AxisPoints.Open), 0, 0);
-                return false;
-            }
-            else
-            {
-                DoorObject.gameObject.transform.Rotate(-(AxisPoints.Close - AxisPoints.Open), 0, 0);
-                return true;
-            }
-        }
-        else if(axis == "y")
-        {
-            if (IsOpen)
-            {
-                DoorObject.gameObject.transform.Rotate(-(AxisPoints.Close - AxisPoints.Open), 0, 0);
-                return false;
-            }
-            else
-            {
-                DoorObject.gameObject.transform.Rotate((AxisPoints.Close - AxisPoints.Open), 0, 0);
-                return true;
-            }
-        }
-        else if(axis == "z")
-        {
-            if (IsOpen)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        else
-        {
-            return false;
-        }
+		if (!Locked) {
+			string axis = Axis.ToLower ();
+			if (axis == "x") {
+				if (IsOpen) {
+					DoorObject.gameObject.transform.Rotate ((AxisPoints.Close - AxisPoints.Open), 0, 0);
+					return false;
+				} else {
+					DoorObject.gameObject.transform.Rotate (-(AxisPoints.Close - AxisPoints.Open), 0, 0);
+					return true;
+				}
+			} else if (axis == "y") {
+				if (IsOpen) {
+					DoorObject.gameObject.transform.Rotate (-(AxisPoints.Close - AxisPoints.Open), 0, 0);
+					return false;
+				} else {
+					DoorObject.gameObject.transform.Rotate ((AxisPoints.Close - AxisPoints.Open), 0, 0);
+					return true;
+				}
+			} else if (axis == "z") {
+				if (IsOpen) {
+					return false;
+				} else {
+					return true;
+				}
+			} else {
+				return false;
+			}
+		} else {	//locked door
+			GameObject.FindGameObjectWithTag("Player").GetComponent<Notifications>().Notify("Complete the objectives before moving on.");
+		}
+		return false;
     }
 }
